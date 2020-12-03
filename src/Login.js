@@ -1,11 +1,12 @@
 import React from 'react';
-
+import {UserOutlined, LockOutlined}  from "@ant-design/icons";
 import 'antd/dist/antd.css';
 import {Row,Col,Card, Form, Input, Button} from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 const Login = (props) => {
 
-  function signUp() {
+  const signUp = ()=> {
 
     props.history.push("/signUp");
   }
@@ -23,20 +24,19 @@ const Login = (props) => {
                   initialValues={{ remember: true }}
               >
                 <Form.Item
-                    label="Username"
-                    name="username"
+
                     rules={[{ required: true, message: 'Please input your username!' }]}
                 >
-                  <Input />
+                  <Input name="userName" placeholder="Please Input Your Username!" addonBefore={<UserOutlined />}/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
-                    name="password"
+
                     rules={[{ required: true, message: 'Please input your password!' }]}
                 >
-                  <Input.Password />
-                </Form.Item>
+                  <Input.Password name="userName" placeholder="Please Input Your Password!" addonBefore={<LockOutlined />}/>
+                </Form.Item
+                    >
                 <Form.Item>
                   <Button className="btn-md" style={{backgroundColor:"#321fdb",color:"white"}} type="button" htmlType="submit">
                     Submit
@@ -49,7 +49,7 @@ const Login = (props) => {
             <Card style={{backgroundColor:"#321fdb",height:"100%",width:"100%",color:"white"}}   bordered={false}>
               <h2 style={{color:"white"}}>Sign up</h2>
               <p style={{color:"white"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              <a > <button onClick={signUp} className="btn" style={{backgroundColor:"#321fdb",color:"white"}} type="button">Register Now</button></a>
+              <button onClick={signUp} className="btn" style={{backgroundColor:"#321fdb",color:"white"}} type="button">Register Now</button>
             </Card>
           </Col>
           <Col span={8}></Col>
