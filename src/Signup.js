@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Row, Col,Card } from 'antd';
+import 'antd/dist/antd.css';
+
 
 const Signup = () => {
     const [userDetail, setUserDetail] = useState({
@@ -12,7 +15,6 @@ const Signup = () => {
         country: ""
     });
 
-    const [list, setList] = useState([]);
     const [error, setError] = useState({});
 
     const validation = () => {
@@ -56,9 +58,9 @@ const Signup = () => {
 
     const handleChange = e => {
         const { name, value } = e.target;
-        if (name === "active") {
-            setUserDetail({ ...userDetail, [name]: checked })
-        } else
+        // if (name === "active") {
+        //     setUserDetail({ ...userDetail, [name]: checked })
+        // } else
         if (name === "gender") {
             setUserDetail({ ...userDetail, [name]: value })
         } else {
@@ -76,49 +78,63 @@ const Signup = () => {
            return false;
         }
         setUserDetail({})
-        setEditableIndex(null)
     }
 
     return (
-        <div className="container">
-            <div className="col-md-6">
-                <h2>Registration Form</h2><br />
+        <>
+            <div style={{backgroundColor: "#ebedef", background: "fill"}} >
+                <Row >
+                    <Col span={8}></Col>
+                    <Col span={8}>
+                        <Card>
+                                <div >
+                                    <h1>Register</h1><br />
 
-                <b>FIRST NAME</b> : <input type="text" name="firstName" value={userDetail.firstName}
-                                           onChange={handleChange} /><span style={{ color: "red" }}>{error.firstName}</span><br /><br />
+                                    <p>Create your Account</p>
 
-                <b>LAST NAME</b> : <input type="text" name="lastName" value={userDetail.lastName}
-                                          onChange={handleChange} /><span style={{ color: "red" }}>{error.lastName}</span><br /><br />
+                                    <b>FIRST NAME</b> : <input type="text" name="firstName" value={userDetail.firstName}
+                                                               onChange={handleChange} /><span style={{ color: "red" }}>{error.firstName}</span><br /><br />
 
-                <b>E-MAIL</b> : <input type="text" name="email" value={userDetail.email}
-                                          onChange={handleChange} /><span style={{ color: "red" }}>{error.email}</span><br /><br />
+                                    <b>LAST NAME</b> : <input type="text" name="lastName" value={userDetail.lastName}
+                                                              onChange={handleChange} /><span style={{ color: "red" }}>{error.lastName}</span><br /><br />
 
-                <b>AGE</b> : <input type="text" name="age" value={userDetail.age}
-                                    onChange={handleChange} /><span style={{ color: "red" }}>{error.age}</span><br /><br />
+                                    <b>E-MAIL</b> : <input type="text" name="email" value={userDetail.email}
+                                                           onChange={handleChange} /><span style={{ color: "red" }}>{error.email}</span><br /><br />
 
-                <b>GENDER</b> :{' '}<input type="radio" name="gender" checked={userDetail.gender === "male"} onChange={handleChange} value="male" />Male{' '}
-                <input type="radio" name="gender" checked={userDetail.gender === " female"} onChange={handleChange} value="female" />Female{' '}
-                <input type="radio" name="gender" checked={userDetail.gender === "other"} onChange={handleChange} value="other" />Other<span style={{ color: "red" }}>{error.gender}</span><br /><br />
+                                    <b>AGE</b> : <input type="text" name="age" value={userDetail.age}
+                                                        onChange={handleChange} /><span style={{ color: "red" }}>{error.age}</span><br /><br />
 
-                <b>ADDRESS</b> : <input type="text" name="address" value={userDetail.address}
-                                        onChange={handleChange} /><span style={{ color: "red" }}>{error.address}</span><br /><br />
+                                    <b>GENDER</b> :{' '}<input type="radio" name="gender" checked={userDetail.gender === "male"} onChange={handleChange} value="male" />Male{' '}
+                                    <input type="radio" name="gender" checked={userDetail.gender === " female"} onChange={handleChange} value="female" />Female{' '}
+                                    <input type="radio" name="gender" checked={userDetail.gender === "other"} onChange={handleChange} value="other" />Other<span style={{ color: "red" }}>{error.gender}</span><br /><br />
 
-                <b>COUNTRY</b>:{' '}<select name="country" value={userDetail.country} onChange={handleChange}>
-                <option value="India">India</option>
-                <option value="Brazil">Brazil</option>
-                <option value="USA">USA</option>
-                <option value="Dubai">Dubai</option>
-                <option value="UK">UK</option>
-            </select><span style={{ color: "red" }}>{error.country}</span><br /><br />
+                                    <b>ADDRESS</b> : <input type="text" name="address" value={userDetail.address}
+                                                            onChange={handleChange} /><span style={{ color: "red" }}>{error.address}</span><br /><br />
 
-                    <b>PASSWORD</b> : <input type="text" name="password" value={userDetail.password}
-                                          onChange={handleChange} /><span style={{ color: "red" }}>{error.password}</span><br /><br />
+                                    <b>COUNTRY</b>:{' '}<select name="country" value={userDetail.country} onChange={handleChange}>
+                                    <option value="India">India</option>
+                                    <option value="Brazil">Brazil</option>
+                                    <option value="USA">USA</option>
+                                    <option value="Dubai">Dubai</option>
+                                    <option value="UK">UK</option>
+                                </select><span style={{ color: "red" }}>{error.country}</span><br /><br />
 
-                <b>IS Agree :</b>: <input type="checkbox" checked name="active" onChange={handleChange} /><br /><br />
+                                    <b>PASSWORD</b> : <input type="text" name="password" value={userDetail.password}
+                                                             onChange={handleChange} /><span style={{ color: "red" }}>{error.password}</span><br /><br />
 
-                <button className="btn-primary" onClick={submitValue}>Submit</button>
-            </div>}
-        </div>
+                                    <b>IS Agree :</b>: <input type="checkbox" checked name="active" onChange={handleChange} /><br /><br />
+
+                                    <button className="btn-primary" onClick={submitValue}>Submit</button>
+                                </div>
+
+                        </Card>
+
+                    </Col>
+                    <Col span={8} ></Col>
+                </Row>
+            </div>
+
+</>
     )
 }
 export default Signup;
