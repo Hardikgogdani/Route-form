@@ -9,3 +9,6 @@
     background-color: #ebedef !important;
     height: 258px;
 }
+body {
+    position: fixed;
+}
