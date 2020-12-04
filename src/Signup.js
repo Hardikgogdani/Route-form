@@ -1,8 +1,71 @@
 import {Row,Col,Card, Form, Input,Radio,InputNumber, Select, Checkbox, Button} from 'antd';
 import {UserOutlined,MailOutlined,MobileOutlined,HomeOutlined,FlagOutlined,LockOutlined} from '@ant-design/icons';
+import React, { useState} from "react";
 
 
 const Signup = (props) => {
+    // const obj = {
+    //     array: ["India","Brazil","USA","Dubai","UK"]
+    // };
+    // for (var i=0;i<6;i++){
+    //     obj.array[i] = i+1;
+    // }
+    const [items] =useState([
+        {
+            label: "India",
+            value : "India"
+        },
+        {
+            label: "Brazil",
+            value : "Brazil"
+        },
+        {
+            label: "USA",
+            value : "USA"
+        },
+        {
+            label: "Dubai",
+            value : "Dubai"
+        },
+        {
+            label: "UK",
+            value : "UK"
+        }
+    ]);
+    const [userDetail, setUserDetail] = useState({
+        firstName: "",
+        lastName: "",
+        address: "",
+        gender: "",
+        age: "",
+        country: "",
+        email:"",
+        phoneNumber:""
+    });
+    const handleChange = e => {
+        const { name, value } = e.target;
+        // if (name === "active") {
+        //     setUserDetail({ ...userDetail, [name]: checked })
+        // } else
+        if (name === "gender") {
+            setUserDetail({ ...userDetail, [name]: value })
+        } else {
+            setUserDetail({ ...userDetail, [name]: value })
+        }
+    }
+    const Validation =()=>{
+
+    }
+
+    const submitValue = () => {
+        const x = Validation();
+        if (x) {
+            return
+        }
+
+        setUserDetail({})
+
+    }
 
     return (
         <>
@@ -20,25 +83,25 @@ const Signup = (props) => {
                             name="firstname"
                             rules={[{ required: true, message: 'Please input your firstname!'}]}
                         >
-                            <Input placeholder="Place Your firstname"  addonBefore={<UserOutlined />}/>
+                            <Input placeholder="Place Your firstname"  addonBefore={<UserOutlined />} value={userDetail.firstName}  onChange={handleChange}/>
                         </Form.Item>
                         <Form.Item
                             name="lastname"
                             rules={[{ required: true, message: 'Please input your lastname!',type: 'email'}]}
                         >
-                            <Input placeholder="Place Your Lastname"  addonBefore={<UserOutlined />}/>
+                            <Input placeholder="Place Your Lastname"  addonBefore={<UserOutlined />} value={userDetail.lastName} onChange={handleChange}/>
                         </Form.Item>
                         <Form.Item
                             name="email"
                             rules={[{ required: true, message: 'Please input your email!' }]}
                         >
-                            <Input placeholder="Place Your Email" addonBefore={<MailOutlined />}/>
+                            <Input placeholder="Place Your Email" addonBefore={<MailOutlined />} value={userDetail.email} onChange={handleChange}/>
                         </Form.Item>
                         <Form.Item
-                            name="phonenumber"
-                            rules={[{ required: true, message: 'Please input your phonenumber!' }]}
+                            name="phoneNumber"
+                            rules={[{ required: true, message: 'Please input your phoneNumber!' }]}
                         >
-                            <Input placeholder="Place Your phonenumber" addonBefore={<MobileOutlined />}/>
+                            <Input placeholder="Place Your phoneNumber" addonBefore={<MobileOutlined />} value={userDetail.phoneNumber} onChange={handleChange}/>
                         </Form.Item>
 
                             <Form.Item
@@ -52,16 +115,16 @@ const Signup = (props) => {
                                     max: 99
                                 }]}
                             >
-                                <InputNumber placeholder="age"/>
+                                <InputNumber placeholder="age" value={userDetail.age} onChange={handleChange}/>
                             </Form.Item>
 
                         <Form.Item  name="address"  rules={[{required: true, message: 'Address is required'}]}>
-                            <Input placeholder="Enter Your Address" style={{resize:"none"}} addonBefore={<HomeOutlined />}/>
+                            <Input placeholder="Enter Your Address" style={{resize:"none"}} addonBefore={<HomeOutlined />} value={userDetail.address} onChange={handleChange}/>
                         </Form.Item>
 
 
                             Gender: <Form.Item  name="gender" rules={[{required: true, message: 'Gender is required'}]}>
-                                <Radio.Group name="gender"  >
+                                <Radio.Group name="gender" onChange={handleChange} >
                                     <Radio value="male">Male</Radio>
                                     <Radio value="female">Female</Radio>
                                     <Radio value="other">Other</Radio>
@@ -70,12 +133,23 @@ const Signup = (props) => {
 
                             <Form.Item name="country" label={(<FlagOutlined/>)}
                                        rules={[{required: true, message: 'Country is required'}]}>
-                                <Select  placeholder="Please Select Your Country" allowClear>
-                                    <Select.Option value="India">India</Select.Option>
-                                    <Select.Option value="Brazil">Brazil</Select.Option>
-                                    <Select.Option value="USA">USA</Select.Option>
-                                    <Select.Option value="Dubai">Dubai</Select.Option>
-                                    <Select.Option value="UK">UK</Select.Option>
+                                <Select  placeholder="Please Select Your Country" allowClear  value={userDetail.country}>
+                                    {/*{obj.array.length >0 && obj.array.map((item) =>*/}
+                                    {/*    <option key={item.array}>{item.array}</option>*/}
+                                    {/*)}*/}
+                                    {items.map(items => (
+                                        <option
+                                        key={items.value}
+                                        value={items.value}>
+                                            {items.label}
+                                        </option>
+                                    ))}
+
+                                    {/*<Select.Option value="India">India</Select.Option>*/}
+                                    {/*<Select.Option value="Brazil">Brazil</Select.Option>*/}
+                                    {/*<Select.Option value="USA">USA</Select.Option>*/}
+                                    {/*<Select.Option value="Dubai">Dubai</Select.Option>*/}
+                                    {/*<Select.Option value="UK">UK</Select.Option>*/}
                                 </Select>
                             </Form.Item>
                         <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]} hasFeedback>
@@ -118,7 +192,7 @@ const Signup = (props) => {
 
                         <Form.Item>
 
-                            <Button className="btn-md" style={{backgroundColor:"#321fdb",color:"white"}} type="primary" size={"large"} htmlType="submit">
+                            <Button className="btn-md" style={{backgroundColor:"#321fdb",color:"white"}} type="primary" size={"large"} htmlType="submit" onClick={submitValue}>
                                 Submit
                             </Button>
 

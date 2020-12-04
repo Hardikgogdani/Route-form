@@ -14,8 +14,7 @@ const Login = (props) => {
   return (
       <>
         <Row style={{"margin-top": 200}}>
-          <Col span={8}></Col>
-
+          <Col span={8}/>
           <Col span={4}>
             <Card style={{borderColor:"#321fdb"}} bordered={true}>
               <h2 style={{color:"#321fdb"}}>Log In</h2>
@@ -52,7 +51,7 @@ const Login = (props) => {
               <button onClick={signUp} className="btn" style={{backgroundColor:"#321fdb",color:"white"}} type="button">Register Now</button>
             </Card>
           </Col>
-          <Col span={8}></Col>
+          <Col span={8}/>
         </Row>
       </>
   );
