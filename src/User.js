@@ -1,108 +1,114 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Row, Col } from 'antd';
 import Table from "antd/lib/table";
 
-const columns = [
-    {
-        title: 'First Name',
-        width: 120,
-        dataIndex: 'firstName',
-        key: 'firstName',
-        fixed: 'left',
-    },
-    {
-        title: 'Last Name',
-        width: 100,
-        dataIndex: 'lastName',
-        key: 'lastName',
-        fixed: 'left',
-    },
-    {
-        title: 'Email',
-        width: 100,
-        dataIndex: 'email',
-        key: 'email',
-        fixed: 'left',
-    },
-    {
-        title: 'Password',
-        width: 100,
-        dataIndex: 'password',
-        key: 'password',
-        fixed: 'left',
-    },
-    {
-        title: 'Age',
-        width: 100,
-        dataIndex: 'age',
-        key: 'age',
-        fixed: 'left',
-    },
-    {
-        title: 'Hobby',
-        width: 100,
-        dataIndex: 'hobby',
-        key: 'hobby',
-        fixed: 'left',
-    },
-    {
-        title: 'Gender',
-        width: 100,
-        dataIndex: 'gender',
-        key: 'gender',
-        fixed: 'left',
-    },
-    {
-        title: 'Action',
-        dataIndex: 'id',
-        render: (text, record) => (
-            <div>
-                <button className="btn btn-outline-primary btn-mini" onClick={() => onEdit(record)}>
-                    Edit
-                </button>
-                &nbsp;&nbsp;
-                <button className="btn btn-outline-danger btn-mini" onClick={() => onDelete(record)}>
-                    Delete
-                </button>
-            </div>
-        )
-    },
 
-]
-const data = [
-    {
-        key: '1',
-        firstName: 'John Brown',
-        age: 32,
-        address: 'New York Park',
-    },
-    {
-        key: '2',
-        firstName: 'Jim Green',
-        age: 40,
-        address: 'London Park',
-    },
-];
 
-const onEdit = () =>{
-    console.log("Edit");
-}
-const onDelete = () =>{
-    console.log("delete");
-}
 
-const User = () =>{
+const User = (props) =>{
+    const [data, setData] = useState([]);
+    const [editableIndex, setEditableIndex] = useState(null);
+    const [userDetail, setUserDetail] = useState({});
+
+    useEffect(() => {
+        let list = [];
+        if (JSON.parse(localStorage.getItem("data")) !== null) {
+            list = JSON.parse(localStorage.getItem("data"));
+        };
+        setData(list);
+    }, [])
+
+    const onDelete = (index) => {
+        setData(data.filter((value, i) => i !== index))
+        localStorage.setItem('data', JSON.stringify(data));
+    }
+
+    const onEdit = (index) => {
+        props.history.push(`/edit/${index.id}`)
+        setUserDetail(data[index])
+        setData(data)
+        setEditableIndex(index)
+    }
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            fixed: 'left',
+        },
+        {
+            title: 'First Name',
+            width: 120,
+            dataIndex: 'firstname',
+            key: 'firstName',
+            fixed: 'left',
+        },
+        {
+            title: 'Last Name',
+            width: 100,
+            dataIndex: 'lastname',
+            key: 'lastName',
+            fixed: 'left',
+        },
+        {
+            title: 'Email',
+            width: 100,
+            dataIndex: 'email',
+            key: 'email',
+            fixed: 'left',
+        },
+        {
+            title: 'Age',
+            width: 100,
+            dataIndex: 'age',
+            key: 'age',
+            fixed: 'left',
+        },
+        {
+            title: 'Country',
+            width: 100,
+            dataIndex: 'country',
+            key: 'countrty',
+            fixed: 'left',
+        },
+        {
+            title: 'Gender',
+            width: 100,
+            dataIndex: 'gender',
+            key: 'gender',
+            fixed: 'left',
+        },
+        {
+            title: 'Action',
+            dataIndex: 'id',
+            render: (text, record) => (
+                <div>
+                    <button className="btn btn-outline-primary btn-mini" onClick={() => onEdit(record)}>
+                        Edit
+                    </button>
+                    &nbsp;&nbsp;
+                    <button className="btn btn-outline-danger btn-mini" onClick={() => onDelete(record)}>
+                        Delete
+                    </button>
+                </div>
+            )
+        },
+
+    ]
+
+
+
 
     return(
         <>
-            <h1>User</h1>
+            <h3>Users Detail</h3>
             <Row>
                 <Col span={6}/>
                 <Col span={12} className="mt-3">
                     <Table
                         columns={columns}
                         dataSource={data}
-                        pagination={{pageSize: 10}}
+                        pagination={{pageSize: 5}}
                         rowKey={'key'}
                         // loading={isLoading}
                     />

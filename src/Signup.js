@@ -60,16 +60,16 @@ const SignUp = (props) => {
     }
 
     const onSub = () => {
-        if (editableIndex !== null) {
-            data[editableIndex] = userDetail
-        } else{
+
+            userDetail.id = data.length + 1;
             data.push(userDetail)
             setData(data)
-        }
         localStorage.setItem("data", JSON.stringify(data));
         setUserDetail({})
         setEditableIndex(null)
     }
+
+
 
     return (
         <>
@@ -80,7 +80,7 @@ const SignUp = (props) => {
                         <h2 style={{textAlign: "center"}}>Registration Form</h2>
                         <p style={{textAlign: "center"}}>Creat Your Account</p><br/>
                         <Form onFinishFailed onFinish={() => {
-                            props.history.push("/Users")
+                            props.history.push("/User")
                         }}>
                             <Form.Item
                                 name="firstname"
