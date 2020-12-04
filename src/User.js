@@ -3,8 +3,6 @@ import { Row, Col } from 'antd';
 import Table from "antd/lib/table";
 
 
-
-
 const User = (props) =>{
     const [data, setData] = useState([]);
     const [editableIndex, setEditableIndex] = useState(null);
@@ -19,8 +17,8 @@ const User = (props) =>{
     }, [])
 
     const onDelete = (index) => {
+        let data = JSON.parse(localStorage.getItem('list'));
         setData(data.filter((value, i) => i !== index))
-        localStorage.setItem('data', JSON.stringify(data));
     }
 
     const onEdit = (index) => {
@@ -101,7 +99,7 @@ const User = (props) =>{
 
     return(
         <>
-            <h3>Users Detail</h3>
+            <h3 id="user-id">Users Detail:--</h3>
             <Row>
                 <Col span={6}/>
                 <Col span={12} className="mt-3">
