@@ -1,23 +1,14 @@
 import React,{useState,useEffect} from "react";
-import {Row, Col, Card, Form, Input, InputNumber, Select, Radio, Checkbox, Button} from "antd";
+import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button,InputNumber} from "antd";
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
 
 const SignUp = (props) => {
 
-    const [userDetail, setUserDetail] = useState({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phone: "",
-        age: "",
-        address: "",
-        gender: "",
-        country: "",
-        password: ""
-    });
+    const [userDetail, setUserDetail] = useState({});
     const [data, setData] = useState([]);
-    const [editableIndex, setEditableIndex] = useState(null);
+    const [error, setError] = React.useState({});
+    // const [editableIndex, setEditableIndex] = useState(null);
 
     const [items] =useState([
         {
@@ -58,15 +49,72 @@ const SignUp = (props) => {
             setUserDetail({...userDetail, [name]: value})
         }
     }
+    const validate = (name, value) => {
+        const emailRegx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ig;
+        const numRegx = /^\d{1,6}(?:\.\d{0,2})?$/g;
+        switch (name) {
+            case 'firstName':
+                if (!value) return "First Name is required";
+                return null;
+            case 'lastName':
+                if (!value) return "Last Name is required";
+                return null;
+            case 'email':
+                if (!emailRegx.test(value)) return "Email is required";
+                return null;
+            case 'age':
+                if (!numRegx.test(value)) return "Age is required";
+                return null;
+            case 'address':
+                if (!value) return "Address is required";
+                return null;
+            case 'gender':
+                if (!value) return "Gender is required";
+                return null;
+            case 'country':
+                if (!value) return "Country is required";
+                return null;
+            case 'password':
+                if (!value) return "Password is required";
+                return null;
+            case 'confirm':
+                if (!value) return "Conform Password is required";
+                return null;
+            default:
+                return null;
+        }
+    };
 
-    const onSub = () => {
+    const onSubmit = () => {
+            let errorObj ={}
+        const newsUerDetail = {
+            firstName: userDetail.firstName,
+            lastName: userDetail.lastName,
+            email: userDetail.email,
+            age: userDetail.age,
+            address: userDetail.address,
+            gender: userDetail.gender,
+            country: userDetail.country,
+            password: userDetail.password,
+            confirm: userDetail.confirm
+        }
 
-            userDetail.id = data.length + 1;
-            data.push(userDetail)
-            setData(data)
-        localStorage.setItem("data", JSON.stringify(data));
-        setUserDetail({})
-        setEditableIndex(null)
+        Object.keys(newsUerDetail).forEach((key) => {
+            const error = validate(key, newsUerDetail[key]);
+            if (error && error.length) {
+                errorObj[key] = error;
+            }
+        });
+        if (Object.keys(errorObj).length > 0) {
+            return setError(errorObj);
+        }
+        else{
+            data.push(userDetail);
+            setData(data);
+            props.history.push("/user");
+            localStorage.setItem("list",JSON.stringify(data));
+            setError({});
+        }
     }
 
 
@@ -79,70 +127,72 @@ const SignUp = (props) => {
                     <Card>
                         <h2 style={{textAlign: "center"}}>Registration Form</h2>
                         <p style={{textAlign: "center"}}>Creat Your Account</p><br/>
-                        <Form onFinishFailed onFinish={() => {
-                            props.history.push("/User")
-                        }}>
+                        <Form>
                             <Form.Item
-                                name="firstname"
-                                rules={[{required: true, message: 'Please input your firstname!'}]}
+                                name="firstName"
                             >
-                                <Input placeholder="Enter Your firstname" name="firstname" value={userDetail.firstname} onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                <Input placeholder="Enter Your firstname" name="firstName" value={userDetail.firstName} onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                <span className="text-danger">{error.firstName || ""}</span>
                             </Form.Item>
 
                             <Form.Item
-                                name="lastname"
-                                rules={[{required: true, message: 'Please input your lastname!'}]}
+                                name="lastName"
                             >
-                                <Input placeholder="Enter Your lastname" name="lastname" value={userDetail.lastname} onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                <Input placeholder="Enter Your lastname" name="lastName" value={userDetail.lastName} onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                <span className="text-danger">{error.lastName || ""}</span>
                             </Form.Item>
 
                             <Form.Item
                                 name="email"
-                                rules={[{required: true, message: 'Please input your EmailId!', type: 'email'}]}
                             >
                                 <Input placeholder="Enter Your EmailId" name="email" value={userDetail.email} onChange={handleChange} addonBefore={<MailOutlined/>}/>
+                                <span className="text-danger">{error.email || ""}</span>
                             </Form.Item>
 
                             <Form.Item
                                 name="phone"
-                                rules={[{required: true, message: 'Please input your phone number!'}]}
                             >
                                 <Input placeholder="Enter Your Mobile Number" name="phone" value={userDetail.phone} onChange={handleChange} addonBefore={<MobileOutlined/>}
                                        style={{width: '100%'}}/>
+                                <span className="text-danger">{error.phone || ""}</span>
                             </Form.Item>
 
                             <Form.Item
                                 name="age"
                                 label="Age"
                                 rules={[{
-                                    required: true,
-                                    message: 'Please input your age!',
                                     type: 'number',
                                     min: 1,
-                                    max: 100
+                                    max: 150
                                 }]}
                             >
                                 <InputNumber placeholder="age" name="age" onChange={value => handleChange( {target : {name : "age",value}})}/>
+                                <span className="text-danger">{error.age || ""}</span>
                             </Form.Item>
+
+
 
                             <Form.Item
                                 name="address"
-                                rules={[{required: true, message: 'Address is required'}]}
                             >
-                                <Input style={{width: '50%'}} placeholder="Input Address"
-                                       name="address" value={userDetail.address} addonBefore={<HomeOutlined/>} onChange={handleChange}/>
+                                <Input rows={4} name="address" placeholder="Please Input Your Address!" value={userDetail.address}
+                                          onChange={handleChange} addonBefore={<HomeOutlined/>} />
+                                <span className="text-danger">{error.address || ""}</span>
+
                             </Form.Item>
 
-                            <Form.Item  name="gender" rules={[{required: true, message: 'Gender is required'}]}>
-                                <Radio.Group onChange={e => handleChange( {target : {name : "gender",value: e.target.value}})} value={userDetail.gender}>
-                                    <Radio value="male">Male</Radio>
-                                    <Radio value="female">Female</Radio>
-                                    <Radio value="other">Other</Radio>
+                            <Form.Item
+                                name="gender"
+                            >
+                                <Radio.Group name="gender" onChange={handleChange}>
+                                    <Radio value="Male" checked={userDetail.gender === 'Male'}>Male</Radio>
+                                    <Radio value="Female"  checked={userDetail.gender === 'Female'}>Female</Radio>
+                                    <Radio value="Other"  checked={userDetail.gender === 'Other'}>Other</Radio>
                                 </Radio.Group>
+                                <span className="text-danger">{error.gender || ""}</span>
                             </Form.Item>
 
-                            <Form.Item name="country" label={(<FlagOutlined/>)}
-                                       rules={[{required: true, message: 'Country is required'}]}>
+                            <Form.Item name="country" label={(<FlagOutlined/>)}>
                                 <Select
                                     placeholder="Please Select Your Country"
                                     onChange={value => handleChange( {target : {name : "country",value}})}
@@ -156,33 +206,24 @@ const SignUp = (props) => {
                                         </Select.Option>
                                     ))}
                                 </Select>
+                                <span className="text-danger">{error.country || ""}</span>
                             </Form.Item>
 
                             <Form.Item
                                 name="password"
-                                rules={[{required: true, message: 'Please input your password!'}]}
-                                hasFeedback
+
                             >
                                 <Input.Password placeholder="Enter Your PassWord" name="password" value={userDetail.password} onChange={handleChange} addonBefore={(<LockOutlined/>)}/>
+                                <span className="text-danger">{error.password || ""}</span>
                             </Form.Item>
 
                             <Form.Item
                                 name="confirm"
-                                dependencies={['password']}
-                                hasFeedback
-                                rules={[{required: true, message: 'Please confirm your password!'},
-                                    ({getFieldValue}) => ({
-                                        validator(rule, value) {
-                                            if (!value || getFieldValue('password') === value) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject('The two passwords that you entered do not match!');
-                                        },
-                                    }),
-                                ]}
+
                             >
-                                <Input.Password placeholder="Enter Your Confirm PassWord"
-                                                addonBefore={(<LockOutlined/>)}/>
+                                <Input.Password placeholder="Enter Your Confirm PassWord"  value={userDetail.confirm} onChange={handleChange} name="confirm "addonBefore={(<LockOutlined/>)}/>
+
+                                <span className="text-danger">{error.confirm || ""}</span>
                             </Form.Item>
 
                             <Form.Item
@@ -201,7 +242,7 @@ const SignUp = (props) => {
                             </Form.Item>
 
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" onClick={onSub}>
+                                <Button type="primary" htmlType="submit" onClick={onSubmit}>
                                     Create Account
                                 </Button>
                             </Form.Item>

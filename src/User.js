@@ -16,9 +16,13 @@ const User = (props) =>{
         setData(list);
     }, [])
 
-    const onDelete = (index) => {
-        let data = JSON.parse(localStorage.getItem('list'));
-        setData(data.filter((value, i) => i !== index))
+    const onDelete = (record) => {
+        if(window.confirm('do you want delete')){
+            const filterData = data.filter(index => index !== record);
+            localStorage.setItem('data',JSON.stringify(filterData));
+            setData(filterData);
+        }
+
     }
 
     const onEdit = (index) => {
@@ -37,14 +41,14 @@ const User = (props) =>{
         {
             title: 'First Name',
             width: 120,
-            dataIndex: 'firstname',
+            dataIndex: 'firstName',
             key: 'firstName',
             fixed: 'left',
         },
         {
             title: 'Last Name',
             width: 100,
-            dataIndex: 'lastname',
+            dataIndex: 'lastName',
             key: 'lastName',
             fixed: 'left',
         },
@@ -66,7 +70,7 @@ const User = (props) =>{
             title: 'Country',
             width: 100,
             dataIndex: 'country',
-            key: 'countrty',
+            key: 'country',
             fixed: 'left',
         },
         {
