@@ -7,7 +7,7 @@ import User from "./User";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "./Dashboard";
 import 'antd/dist/antd.css';
-
+import './routeData.css';
 
 function App() {
     return (

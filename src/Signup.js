@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumber} from "antd";
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
-import './routeData.css';
 import {useHistory} from "react-router";
 
 const SignUp = (props) => {

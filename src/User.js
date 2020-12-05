@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Row, Col, Popconfirm} from 'antd';
+import {Row, Col, Popconfirm, message} from 'antd';
 import Table from "antd/lib/table";
 import {useHistory} from "react-router";
 
@@ -34,6 +34,7 @@ const User = (props) => {
         history.push('/Signup');
     }
     const logout =()=>{
+        message.success('Successfully logout');
         localStorage.setItem('token','')
         history.push('/');
     }

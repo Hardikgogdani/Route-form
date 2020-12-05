@@ -1,5 +1,4 @@
 import React from "react";
-import './routeData.css';
 import {useHistory} from "react-router";
 
 const Dashboard = (props) => {

@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {UserOutlined, LockOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
 import {useHistory} from "react-router";
-import {Row, Col, Card, Form, Input, Button} from 'antd';
+import {Row, Col, Card, Form, Input, Button,message} from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const Login = (props) => {
+
     const history = useHistory();
     const [loginData, setLoginData] = useState({});
     const [list, setList] = useState([]);
@@ -28,10 +29,11 @@ const Login = (props) => {
     const onLogin = () => {
         const findLofinUser = list.find(user => user.email === loginData.email && user.password === loginData.password);
         if (findLofinUser && findLofinUser.email && findLofinUser.password) {
+            message.success('You Successfully Loged In');
             localStorage.setItem("token",findLofinUser.email)
             history.push("/dashboard");
         } else {
-            alert("Please enter valid data..");
+            message.error('Enter Valid Details');
         }
     }
 
