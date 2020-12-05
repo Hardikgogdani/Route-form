@@ -3,9 +3,10 @@ import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumbe
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
 import './routeData.css';
+import {useHistory} from "react-router";
 
 const SignUp = (props) => {
-
+    const history = useHistory();
     const [userDetail, setUserDetail] = useState({});
     const [data, setData] = useState([]);
     const [error, setError] = React.useState({});
@@ -125,7 +126,7 @@ const SignUp = (props) => {
 
             localStorage.setItem("list", JSON.stringify(data));
             setError({});
-            props.history.push("/user");
+            history.push("/user");
         }
     }
 

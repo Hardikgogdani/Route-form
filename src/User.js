@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col, Popconfirm} from 'antd';
 import Table from "antd/lib/table";
+import {useHistory} from "react-router";
 
 
 const User = (props) => {
-
+    const history = useHistory();
     const text1 = 'Are you sure to Delete this task?';
 
     const [data, setData] = useState([]);
@@ -26,14 +27,15 @@ const User = (props) => {
     }
 
     const onEdit = (record) => {
-        props.history.push(`/editUserDetails/${record.id}`);
+        history.push(`/editUserDetails/${record.id}`);
     }
 
     const addNew = ()=>{
-        props.history.push('/Signup');
+        history.push('/Signup');
     }
     const logout =()=>{
-        props.history.push('/');
+        localStorage.setItem('token','')
+        history.push('/');
     }
     const columns = [
         {
