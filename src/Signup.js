@@ -78,9 +78,9 @@ const SignUp = (props) => {
             case 'password':
                 if (!value) return "Password is required";
                 return null;
-            // case 'confirm':
-            //     if (!value) return "confirm Password is required";
-            //     return null;
+            case 'checkbox':
+                if (!value) return "mark is required";
+                return null;
             default:
                 return null;
         }
@@ -97,9 +97,7 @@ const SignUp = (props) => {
             gender: userDetail.gender,
             country: userDetail.country,
             password: userDetail.password
-            // confirm: userDetail.confirm
         }
-        console.log(newsUerDetail)
 
         Object.keys(newsUerDetail).forEach((key) => {
             const error = validate(key, newsUerDetail[key]);
@@ -136,53 +134,39 @@ const SignUp = (props) => {
                         <h2 style={{textAlign: "center"}}>Registration Form</h2>
                         <p style={{textAlign: "center"}}>Creat Your Account</p><br/>
                         <Form>
-                            <Form.Item
-                                name="firstName"
-                            >
+                            <Form.Item>
                                 <Input placeholder="Enter Your firstname" name="firstName" value={userDetail.firstName}
                                        onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
                                 <span className="text-danger">{error.firstName || ""}</span>
                             </Form.Item>
 
-                            <Form.Item
-                                name="lastName"
-                            >
+                            <Form.Item>
                                 <Input placeholder="Enter Your lastname" name="lastName" value={userDetail.lastName}
                                        onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
                                 <span className="text-danger">{error.lastName || ""}</span>
                             </Form.Item>
 
-                            <Form.Item
-                                name="email"
-                            >
+                            <Form.Item>
                                 <Input placeholder="Enter Your EmailId" name="email" value={userDetail.email}
                                        onChange={handleChange} addonBefore={<MailOutlined/>}/>
                                 <span className="text-danger">{error.email || ""}</span>
                             </Form.Item>
 
-                            <Form.Item
-                                name="phone"
-                            >
+                            <Form.Item>
                                 <Input placeholder="Enter Your Mobile Number" name="phone" value={userDetail.phone}
                                        onChange={handleChange} addonBefore={<MobileOutlined/>}
                                        style={{width: '100%'}}/>
                                 <span className="text-danger">{error.phone || ""}</span>
                             </Form.Item>
 
-                            <Form.Item
-
-                                label="Age"
-
-                            >
-                                <InputNumber placeholder="age" name="age"
+                            <Form.Item>
+                                Age : <InputNumber placeholder="age" name="age"
                                              onChange={value => handleChange({target: {name: "age", value}})} value={userDetail.age}/>
                                 <span className="text-danger">{error.age || ""}</span>
                             </Form.Item>
 
 
-                            <Form.Item
-                                name="address"
-                            >
+                            <Form.Item>
                                 <Input rows={4} name="address" placeholder="Please Input Your Address!"
                                        value={userDetail.address}
                                        onChange={handleChange} addonBefore={<HomeOutlined/>}/>
@@ -190,10 +174,9 @@ const SignUp = (props) => {
 
                             </Form.Item>
 
-                            <Form.Item
+                            <Form.Item>
 
-                            >
-                                <Radio.Group name="gender"  onChange={e => handleChange({target: {name: "gender", value: e.target.value}})} value={userDetail.gender}>
+                                Gender: <Radio.Group name="gender"  onChange={e => handleChange({target: {name: "gender", value: e.target.value}})} value={userDetail.gender}>
                                     <Radio value="Male" >Male</Radio>
                                     <Radio value="Female" >Female</Radio>
                                     <Radio value="Other" >Other</Radio>
@@ -201,7 +184,7 @@ const SignUp = (props) => {
                                 <span className="text-danger">{error.gender || ""}</span>
                             </Form.Item>
 
-                            <Form.Item name="country" label={(<FlagOutlined/>)}>
+                            <Form.Item  label={(<FlagOutlined/>)}>
                                 <Select
                                     placeholder="Please Select Your Country"
                                     onChange={value => handleChange({target: {name: "country", value}})}  value={userDetail.country}
@@ -218,10 +201,8 @@ const SignUp = (props) => {
                                 <span className="text-danger">{error.country || ""}</span>
                             </Form.Item>
 
-                            <Form.Item
-                                name="password"
+                            <Form.Item>
 
-                            >
                                 <Input.Password placeholder="Enter Your PassWord" name="password"
                                                 value={userDetail.password} onChange={handleChange}
                                                 addonBefore={(<LockOutlined/>)}/>
@@ -247,7 +228,7 @@ const SignUp = (props) => {
                                 //     },
                                 // ]}
                             >
-                                <Checkbox>
+                                <Checkbox name="checkbox">
                                     I have read the agreement
                                 </Checkbox>
                             </Form.Item>
