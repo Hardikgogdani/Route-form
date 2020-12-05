@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumber} from "antd";
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
+import './routeData.css';
 
 const SignUp = (props) => {
 
     const [userDetail, setUserDetail] = useState({});
     const [data, setData] = useState([]);
     const [error, setError] = React.useState({});
-    // const [editableIndex, setEditableIndex] = useState(null);
 
     const [items] = useState([
         {
@@ -209,32 +209,14 @@ const SignUp = (props) => {
                                 <span className="text-danger">{error.password || ""}</span>
                             </Form.Item>
 
-                            {/*<Form.Item*/}
-                            {/*    name="password"*/}
-
-                            {/*>*/}
-                            {/*    <Input.Password placeholder="Enter Your Confirm PassWord"  value={userDetail.confirm} onChange={handleChange} name="confirm "addonBefore={(<LockOutlined/>)}/>*/}
-
-                            {/*    <span className="text-danger">{error.confirm || ""}</span>*/}
-                            {/*</Form.Item>*/}
-
-                            <Form.Item
-                                // name="agreement"
-                                // valuePropName="checked"
-                                // rules={[
-                                //     {
-                                //         validator: (_, value) =>
-                                //             value ? Promise.resolve() : Promise.reject('Should accept agreement'),
-                                //     },
-                                // ]}
-                            >
+                            <Form.Item>
                                 <Checkbox name="checkbox">
                                     I have read the agreement
                                 </Checkbox>
                             </Form.Item>
 
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" onClick={onSubmit}>
+                                <Button  className="btn-create-account" Type="submit" onClick={onSubmit}>
                                     Create Account
                                 </Button>
                             </Form.Item>

@@ -1,0 +1,49 @@
+.login-card-first{
+height: 320px;
+}
+body {
+    position: relative;
+    background-color: #ebedef;
+}
+#user-id{
+    background-color: red;
+}
+
+.h2-login{
+    color: lightgray;
+}
+
+.btn-md{
+    background-color: #321fdb;
+    color: white;
+    border-radius: 5px;
+    height: 33px;
+    width: 82.36px;
+}
+.card_case{
+    height: 320px;
+    width: 389px;
+    background-color: #321fdb;
+    text-align: center!important;
+}
+.login-card-h2{
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 21px;
+}
+.login-card-p{
+    color: white;
+}
+.login-card-register-now{
+    background-color: #321fdb;
+    color: white;
+    height: 33px;
+    width: 110.41px;
+    border: 0;
+}
+
+.btn-create-account{
+    width: 100%;
+    background-color: #2eb85c;
+    border-radius: 50px;
+}

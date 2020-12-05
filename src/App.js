@@ -5,7 +5,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import User from "./User";
 import 'antd/dist/antd.css';
-import './App.css';
+import './routeData.css';
 
 function App() {
     return (
