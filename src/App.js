@@ -16,6 +16,7 @@ function App() {
                     <Route path="/signUp" component={Signup}/>
                     <Route path="/user" component={User}/>
                     <Route path="/edit" component={Signup}/>
+                    <Route path="/editUserDetails/:id" component={Signup} />
                 </Switch>
             </BrowserRouter>
         </div>

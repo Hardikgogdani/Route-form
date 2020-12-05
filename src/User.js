@@ -1,97 +1,105 @@
-import React,{useState,useEffect} from 'react';
-import { Row, Col } from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Row, Col, Popconfirm} from 'antd';
 import Table from "antd/lib/table";
 
 
-const User = (props) =>{
+const User = (props) => {
+
+    const text1 = 'Are you sure to Delete this task?';
+
     const [data, setData] = useState([]);
-    const [editableIndex, setEditableIndex] = useState(null);
-    const [userDetail, setUserDetail] = useState({});
 
     useEffect(() => {
         let list = [];
-        if (JSON.parse(localStorage.getItem("data")) !== null) {
-            list = JSON.parse(localStorage.getItem("data"));
-        };
+        if (JSON.parse(localStorage.getItem('list')) !== null) {
+            list = JSON.parse(localStorage.getItem("list"));
+        }
+        ;
         setData(list);
     }, [])
 
     const onDelete = (record) => {
-        if(window.confirm('do you want delete')){
-            const filterData = data.filter(index => index !== record);
-            localStorage.setItem('data',JSON.stringify(filterData));
-            setData(filterData);
-        }
+
+        const filterData = data.filter(index => index !== record);
+        localStorage.setItem('list', JSON.stringify(filterData));
+        setData(filterData);
+
 
     }
 
-    const onEdit = (index) => {
-        props.history.push(`/edit/${index.id}`)
-        setUserDetail(data[index])
-        setData(data)
-        setEditableIndex(index)
+    const onEdit = (record) => {
+        props.history.push(`/editUserDetails/${record.id}`);
     }
     const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            fixed: 'left',
+
         },
         {
             title: 'First Name',
-            width: 120,
             dataIndex: 'firstName',
             key: 'firstName',
-            fixed: 'left',
+
         },
         {
             title: 'Last Name',
-            width: 100,
             dataIndex: 'lastName',
             key: 'lastName',
-            fixed: 'left',
+
         },
         {
             title: 'Email',
-            width: 100,
             dataIndex: 'email',
             key: 'email',
-            fixed: 'left',
+
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+
         },
         {
             title: 'Age',
-            width: 100,
             dataIndex: 'age',
             key: 'age',
-            fixed: 'left',
+
         },
         {
             title: 'Country',
-            width: 100,
             dataIndex: 'country',
             key: 'country',
-            fixed: 'left',
+
         },
         {
             title: 'Gender',
-            width: 100,
             dataIndex: 'gender',
             key: 'gender',
-            fixed: 'left',
         },
         {
             title: 'Action',
             dataIndex: 'id',
             render: (text, record) => (
                 <div>
-                    <button className="btn btn-outline-primary btn-mini" onClick={() => onEdit(record)}>
+
+
+                    <button className="btn btn-outline-primary btn-mini" onClick={() => {
+                        onEdit(record)
+                    }}>
                         Edit
                     </button>
-                    &nbsp;&nbsp;
-                    <button className="btn btn-outline-danger btn-mini" onClick={() => onDelete(record)}>
-                        Delete
-                    </button>
+
+
+                    &nbsp; &nbsp;
+                    <Popconfirm placement="rightTop" title={text1} onConfirm={() => {
+                        onDelete(record)
+                    }} okText="Yes" cancelText="No">
+                        <button className="btn btn-outline-danger btn-mini">
+                            Delete
+                        </button>
+                    </Popconfirm>
                 </div>
             )
         },
@@ -99,9 +107,7 @@ const User = (props) =>{
     ]
 
 
-
-
-    return(
+    return (
         <>
             <h3 id="user-id">Users Detail:--</h3>
             <Row>
@@ -111,8 +117,7 @@ const User = (props) =>{
                         columns={columns}
                         dataSource={data}
                         pagination={{pageSize: 5}}
-                        rowKey={'key'}
-                        // loading={isLoading}
+                        // rowKey={'key'}
                     />
                 </Col>
             </Row>
