@@ -78,8 +78,27 @@ body {
     background-color: cornsilk;
     width: 120px;
     border-radius: 25px;
-    margin-left: 120px;
     height: 50px;
     font-size: large;
     border: 0;
+
+}
+
+.h1-div{
+    font-size: 50px;
+    font-style: italic;
+    text-align: center;
+    color: darkolivegreen;
+    padding-top: 250px;
+}
+
+.para-div{
+    font-style: oblique;
+    font-size: 25px;
+    text-align: center;
+    color: darksalmon;
+    padding-left: 90px;
+}
+.text{
+    text-align: center;
 }

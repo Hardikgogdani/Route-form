@@ -8,10 +8,11 @@ const Dashboard = (props) => {
         history.push('/user');
     }
     return (
-        <>
-            <h1> Welcome to Dashboard </h1>
+        <div className="text">
+            <h1 className="h1-div"> You Successfully loged IN</h1>
+            <p className="para-div">Click Below to See User Detail 😃 </p>
             <button className="btn-click-me" onClick={listUser}> Click Here</button>
-        </>
+        </div>
     );
 
 }
