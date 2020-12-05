@@ -7,10 +7,12 @@ body {
 }
 #user-id{
     background-color: red;
+    text-align: center;
 }
 
 .h2-login{
     color: lightgray;
+    text-align: center;
 }
 
 .btn-md{
@@ -46,4 +48,27 @@ body {
     width: 100%;
     background-color: #2eb85c;
     border-radius: 50px;
+}
+.btn-add-new{
+    color: green;
+    background-color: cornsilk;
+    width: 120px;
+    border-radius: 25px;
+    margin-left: 120px;
+    height: 50px;
+    font-size: large;
+    border: 0;
+}
+
+.btn-log-out{
+    color: green;
+    background-color: cornsilk;
+    width: 120px;
+    border-radius: 25px;
+    height: 50px;
+    font-size: large;
+    margin-top: 40px;
+    margin-left: 120px;
+    position: relative;
+    border: 0;
 }

@@ -23,12 +23,17 @@ const User = (props) => {
         const filterData = data.filter(index => index !== record);
         localStorage.setItem('list', JSON.stringify(filterData));
         setData(filterData);
-
-
     }
 
     const onEdit = (record) => {
         props.history.push(`/editUserDetails/${record.id}`);
+    }
+
+    const addNew = ()=>{
+        props.history.push('/Signup');
+    }
+    const logout =()=>{
+        props.history.push('/');
     }
     const columns = [
         {
@@ -109,18 +114,20 @@ const User = (props) => {
 
     return (
         <>
-            <h3 id="user-id">Users Detail:--</h3>
+            <h3 id="user-id">Users Detail</h3>
+            <button className="btn-add-new" onClick={addNew}>Add New</button>
+
             <Row>
-                <Col span={6}/>
-                <Col span={12} className="mt-3">
+                <Col span={4}/>
+                <Col span={16} className="mt-3">
                     <Table
                         columns={columns}
                         dataSource={data}
                         pagination={{pageSize: 5}}
-                        // rowKey={'key'}
                     />
                 </Col>
             </Row>
+            <button className="btn-log-out" onClick={logout}>Log Out</button>
         </>
     );
 }

@@ -53,6 +53,7 @@ const SignUp = (props) => {
     const validate = (name, value) => {
         const emailRegx = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/ig;
         const numRegx = /^\d{1,6}(?:\.\d{0,2})?$/g;
+        const phoneRegx = /^[0]?[789]\d{9}$/
         switch (name) {
             case 'firstName':
                 if (!value) return "First Name is required";
@@ -63,11 +64,14 @@ const SignUp = (props) => {
             case 'email':
                 if (!emailRegx.test(value)) return "Email is required";
                 return null;
+            case 'phone':
+                if (!phoneRegx.test(value)) return "Valid PhoneNumber  is required";
+                return null;
             case 'age':
                 if (!numRegx.test(value)) return "Age is required";
                 return null;
             case 'address':
-                if (!value) return "Address is required";
+                if (value.length <20) return "Address is required";
                 return null;
             case 'gender':
                 if (!value) return "Gender is required";
@@ -76,7 +80,7 @@ const SignUp = (props) => {
                 if (!value) return "Country is required";
                 return null;
             case 'password':
-                if (!value) return "Password is required";
+                if (value.length < 8) return "Password is required";
                 return null;
             case 'checkbox':
                 if (!value) return "mark is required";
@@ -93,6 +97,7 @@ const SignUp = (props) => {
             lastName: userDetail.lastName,
             email: userDetail.email,
             age: userDetail.age,
+            phone:userDetail.phone,
             address: userDetail.address,
             gender: userDetail.gender,
             country: userDetail.country,
