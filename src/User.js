@@ -3,16 +3,16 @@ import {Row, Col, Popconfirm, message, Input} from 'antd';
 import Table from "antd/lib/table";
 import {useHistory} from "react-router";
 
-const {Search} = Input;
+
 const User = (props) => {
     const history = useHistory();
     const text1 = 'Are you sure to Delete this task?';
 
-    const [searchDetail,setSearchDetail] = useState({
-        firstName:"",
-        lastName:"",
-        age:"",
-        gender:""
+    const [searchDetail, setSearchDetail] = useState({
+        firstName: "",
+        lastName: "",
+        age: "",
+        gender: ""
     });
     const [data, setData] = useState([]);
     const [duplicate, setDuplicate] = useState([]);
@@ -27,30 +27,27 @@ const User = (props) => {
         setDuplicate(list);
     }, [])
 
-    const handleChange = e =>{
-        const {name,value} = e.target;
+    const handleChange = e => {
+        const {name, value} = e.target;
         setSearchDetail({...searchDetail, [name]: value})
     }
 
-    const searchResult = e => {debugger
+    const searchResult = e => {
         let searchTable = searchDetail;
-        let filter = [];
-        const search  = duplicate.filter(record =>{
-            if(searchTable.firstName){
-               filter =  record.firstName.toLowerCase().includes(searchTable.firstName.toLowerCase())
-            }
-            else if(searchTable.lastName){
-                filter =  record.lastName.toLowerCase().includes(searchTable.lastName.toLowerCase())
-            }
-            else if(searchTable.age){
-                filter =  record.age.toString().toLowerCase().includes(searchTable.age.toLowerCase())
-            }
-            else if(searchTable.gender){
-                filter =  record.gender.toLowerCase() === searchTable.gender.toLowerCase()
-            }
-            return filter
-        });
-        setData(search)
+        let searchTool = duplicate || []
+        if (searchTable.firstName) {
+            searchTool = searchTool.filter(record => record.firstName.toLowerCase().includes(searchTable.firstName.toLowerCase()))
+        }
+        if (searchTable.lastName) {
+            searchTool = searchTool.filter(record => record.lastName.toLowerCase().includes(searchTable.lastName.toLowerCase()))
+        }
+        if (searchTable.age) {
+            searchTool = searchTool.filter(record => record.age.toString().toLowerCase().includes(searchTable.age.toLowerCase()))
+        }
+        if (searchTable.gender) {
+            searchTool = searchTool.filter(record => record.gender.toLowerCase() === searchTable.gender.toLowerCase())
+        }
+        setData(searchTool)
     }
 
     const onDelete = (record) => {
@@ -125,12 +122,16 @@ const User = (props) => {
             dataIndex: 'id',
             render: (text, record) => (
                 <div>
-                    <button className="btn btn-outline-primary btn-mini" onClick={() => {onEdit(record)}}>
+                    <button className="btn btn-outline-primary btn-mini" onClick={() => {
+                        onEdit(record)
+                    }}>
                         Edit
                     </button>
                     &nbsp; &nbsp;
 
-                    <Popconfirm placement="rightTop" title={text1} onConfirm={() => {onDelete(record)}} okText="Yes" cancelText="No">
+                    <Popconfirm placement="rightTop" title={text1} onConfirm={() => {
+                        onDelete(record)
+                    }} okText="Yes" cancelText="No">
                         <button className="btn btn-outline-danger btn-mini">
                             Delete
                         </button>
@@ -149,14 +150,18 @@ const User = (props) => {
 
             <button className="btn-add-new" onClick={addNew}>Add New</button>
 
-            <input className="search" value={searchDetail.firstName} name="firstName" placeholder="search firstname" onChange={handleChange}  />
+            <input className="search" value={searchDetail.firstName} name="firstName" placeholder="search firstname"
+                   onChange={handleChange}/>
 
 
-            <input className="search" value={searchDetail.lastName} name="lastName" placeholder="search lastname" onChange={handleChange}/>
+            <input className="search" value={searchDetail.lastName} name="lastName" placeholder="search lastname"
+                   onChange={handleChange}/>
 
-            <input className="search" value={searchDetail.age} name="age" placeholder="search age" onChange={handleChange}/>
+            <input className="search" value={searchDetail.age} name="age" placeholder="search age"
+                   onChange={handleChange}/>
 
-            <input className="search" value={searchDetail.gender} name="gender" placeholder="search gender" onChange={handleChange}/>
+            <input className="search" value={searchDetail.gender} name="gender" placeholder="search gender"
+                   onChange={handleChange}/>
             <button onClick={searchResult}>Search</button>
 
             <Row>
