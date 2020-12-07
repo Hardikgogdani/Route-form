@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Row, Col, Popconfirm, message, Input} from 'antd';
+import {Row, Col, Popconfirm, message} from 'antd';
 import Table from "antd/lib/table";
 import {useHistory} from "react-router";
 
