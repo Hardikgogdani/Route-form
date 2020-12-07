@@ -102,3 +102,8 @@ body {
 .text{
     text-align: center;
 }
+
+.search{
+    margin: 25px;
+    width: 200px;
+}
