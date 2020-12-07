@@ -39,13 +39,13 @@ const User = (props) => {
             if(searchTable.firstName){
                filter =  record.firstName.toLowerCase().includes(searchTable.firstName.toLowerCase())
             }
-            if(searchTable.lastName){
+            else if(searchTable.lastName){
                 filter =  record.lastName.toLowerCase().includes(searchTable.lastName.toLowerCase())
             }
-            if(searchTable.age){
+            else if(searchTable.age){
                 filter =  record.age.toString().toLowerCase().includes(searchTable.age.toLowerCase())
             }
-            if(searchTable.gender){
+            else if(searchTable.gender){
                 filter =  record.gender.toLowerCase() === searchTable.gender.toLowerCase()
             }
             return filter
