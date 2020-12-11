@@ -2,30 +2,37 @@ import React, {useState, useEffect} from 'react';
 import {Row, Col, Popconfirm, message} from 'antd';
 import Table from "antd/lib/table";
 import {useHistory} from "react-router";
-
+import axios from "axios";
 
 const User = (props) => {
     const history = useHistory();
     const text1 = 'Are you sure to Delete this task?';
 
     const [searchDetail, setSearchDetail] = useState({
-        firstName: "",
+         firstName: "",
         lastName: "",
         age: "",
-        gender: ""
+        gender: "",
+        email:"",
+        password:""
     });
     const [data, setData] = useState([]);
     const [duplicate, setDuplicate] = useState([]);
 
     useEffect(() => {
-        let list = [];
-        if (JSON.parse(localStorage.getItem('list')) !== null) {
-            list = JSON.parse(localStorage.getItem("list"));
-        }
-        ;
-        setData(list);
-        setDuplicate(list);
+        // let list = [];
+        // if (JSON.parse(localStorage.getItem('list')) !== null) {
+        //     list = JSON.parse(localStorage.getItem("list"));
+        // }
+        // ;
+        // setData(list);
+        // setDuplicate(list);
+        listData();
     }, [])
+
+    const listData =()=>{
+        axios.get(`http://localhost:8080/notes`).then(response => setData(response.data || [])).catch(error => console.log(error));
+    }
 
     const handleChange = e => {
         const {name, value} = e.target;
@@ -52,13 +59,19 @@ const User = (props) => {
 
     const onDelete = (record) => {
 
-        const filterData = data.filter(index => index !== record);
-        localStorage.setItem('list', JSON.stringify(filterData));
-        setData(filterData);
+        // const filterData = data.filter(index => index !== record);
+        // localStorage.setItem('list', JSON.stringify(filterData));
+        // setData(filterData);
+
+        axios.delete(`http://localhost:8080/notes/${record._id}`).then(response => {
+            listData();
+            message.success("successfully deleted")
+        }).catch(error => console.log(error));
     }
 
-    const onEdit = (record) => {
-        history.push(`/editUserDetails/${record.id}`);
+    const onEdit = (id) => {
+        history.push(`/editUserDetails/${id}`);
+
     }
 
     const addNew = () => {
@@ -118,19 +131,24 @@ const User = (props) => {
             key: 'gender',
         },
         {
+            title: 'Password',
+            dataIndex: 'password',
+            key: 'password',
+        },
+        {
             title: 'Action',
             dataIndex: 'id',
             render: (text, record) => (
                 <div>
                     <button className="btn btn-outline-primary btn-mini" onClick={() => {
-                        onEdit(record)
+                        onEdit(record._id)
                     }}>
                         Edit
                     </button>
                     &nbsp; &nbsp;
 
                     <Popconfirm placement="rightTop" title={text1} onConfirm={() => {
-                        onDelete(record)
+                        onDelete(record._id)
                     }} okText="Yes" cancelText="No">
                         <button className="btn btn-outline-danger btn-mini">
                             Delete

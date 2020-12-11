@@ -3,7 +3,9 @@ import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumbe
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
 import {useHistory} from "react-router";
+import axios from "axios";
 
+let editedId = null;
 const SignUp = (props) => {
     const history = useHistory();
     const [userDetail, setUserDetail] = useState({});
@@ -34,21 +36,27 @@ const SignUp = (props) => {
     ]);
 
     useEffect(() => {
-        let list = [];
-        if (JSON.parse(localStorage.getItem("list")) !== null) {
-            list = JSON.parse(localStorage.getItem("list"));
-            if (props.match.params.id) {
-                const findId = list.find(item => item.id === parseInt(props.match.params.id));
-                    setUserDetail(findId);
-            }
-        }
-        setData(list);
+        // let list = [];
+        // if (JSON.parse(localStorage.getItem("list")) !== null) {
+        //     list = JSON.parse(localStorage.getItem("list"));
+        //     if (props.match.params.id) {
+        //         const findId = list.find(item => item.id === parseInt(props.match.params.id));
+        //             setUserDetail(findId);
+        //     }
+        // }
+        // setData(list);
+        listData();
     }, [])
+
+    const listData = () => {
+        axios.get(`http://localhost:8080/notes`).then(response => setData(response.data || [])).catch(error => console.log(error));
+
+    }
 
     const handleChange = (e) => {
         const {name, value} = e.target;
 
-            setUserDetail({...userDetail, [name]: value})
+        setUserDetail({...userDetail, [name]: value})
     }
     const validate = (name, value) => {
         const emailRegx = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/ig;
@@ -71,7 +79,7 @@ const SignUp = (props) => {
                 if (!numRegx.test(value)) return "Age is required";
                 return null;
             case 'address':
-                if (value.length <20) return "Address is required";
+                if (value.length < 5) return "Address is required";
                 return null;
             case 'gender':
                 if (!value) return "Gender is required";
@@ -80,7 +88,7 @@ const SignUp = (props) => {
                 if (!value) return "Country is required";
                 return null;
             case 'password':
-                if (value.length < 8) return "Password is required";
+                if (value.length < 3) return "Password is required";
                 return null;
             case 'checkbox':
                 if (!value) return "mark is required";
@@ -90,6 +98,11 @@ const SignUp = (props) => {
         }
     };
 
+    const resetForm = () => {
+        setUserDetail({})
+        setError({})
+    }
+
     const onSubmit = () => {
         let errorObj = {}
         const newsUerDetail = {
@@ -97,7 +110,7 @@ const SignUp = (props) => {
             lastName: userDetail.lastName,
             email: userDetail.email,
             age: userDetail.age,
-            phone:userDetail.phone,
+            phone: userDetail.phone,
             address: userDetail.address,
             gender: userDetail.gender,
             country: userDetail.country,
@@ -112,22 +125,38 @@ const SignUp = (props) => {
         });
         if (Object.keys(errorObj).length) {
             return setError(errorObj);
-        } else {
-            if (props.match.params.id !== undefined) {
-                let index = data.findIndex(item => item.id === parseInt(props.match.params.id));
-                data[index] = userDetail
-                setData(data)
+        }
+            // else {
+            //     if (props.match.params.id !== undefined) {
+            //         let index = data.findIndex(item => item.id === parseInt(props.match.params.id));
+            //         data[index] = userDetail
+            //         setData(data)
+            //     } else {
+            //         userDetail.id = data.length + 1;
+            //          data.push(userDetail)
+            //          setData(data)
+            //
+        //     }
+        else {
+            if (editedId !== null) {
+                axios.get(`http://localhost:8080/notes/${editedId}`)
+                    .then((res) => {
+                            // resetForm()
+                            history.push("/user")
+                        }
+                    );
             } else {
                 userDetail.id = data.length + 1;
-                data.push(userDetail)
-                setData(data)
+                axios.post('http://localhost:8080/notes', userDetail)
+                    .then(() => {
+                        resetForm()
+                        history.push("/user")
+                    })
             }
-
-            localStorage.setItem("list", JSON.stringify(data));
-            setError({});
-            history.push("/user");
         }
+
     }
+
 
 
     return (
@@ -166,7 +195,8 @@ const SignUp = (props) => {
 
                             <Form.Item>
                                 Age : <InputNumber placeholder="age" name="age"
-                                             onChange={value => handleChange({target: {name: "age", value}})} value={userDetail.age}/>
+                                                   onChange={value => handleChange({target: {name: "age", value}})}
+                                                   value={userDetail.age}/>
                                 <span className="text-danger">{error.age || ""}</span>
                             </Form.Item>
 
@@ -181,18 +211,24 @@ const SignUp = (props) => {
 
                             <Form.Item>
 
-                                Gender: <Radio.Group name="gender"  onChange={e => handleChange({target: {name: "gender", value: e.target.value}})} value={userDetail.gender}>
-                                    <Radio value="Male" >Male</Radio>
-                                    <Radio value="Female" >Female</Radio>
-                                    <Radio value="Other" >Other</Radio>
-                                </Radio.Group>
+                                Gender: <Radio.Group name="gender" onChange={e => handleChange({
+                                target: {
+                                    name: "gender",
+                                    value: e.target.value
+                                }
+                            })} value={userDetail.gender}>
+                                <Radio value="Male">Male</Radio>
+                                <Radio value="Female">Female</Radio>
+                                <Radio value="Other">Other</Radio>
+                            </Radio.Group>
                                 <span className="text-danger">{error.gender || ""}</span>
                             </Form.Item>
 
-                            <Form.Item  label={(<FlagOutlined/>)}>
+                            <Form.Item label={(<FlagOutlined/>)}>
                                 <Select
                                     placeholder="Please Select Your Country"
-                                    onChange={value => handleChange({target: {name: "country", value}})}  value={userDetail.country}
+                                    onChange={value => handleChange({target: {name: "country", value}})}
+                                    value={userDetail.country}
                                     allowClear
                                 >
                                     {items.map(items => (
@@ -221,7 +257,7 @@ const SignUp = (props) => {
                             </Form.Item>
 
                             <Form.Item>
-                                <Button  className="btn-create-account" Type="submit" onClick={onSubmit}>
+                                <Button className="btn-create-account" onClick={onSubmit}>
                                     Create Account
                                 </Button>
                             </Form.Item>
