@@ -4,6 +4,7 @@ import Table from "antd/lib/table";
 import {useHistory} from "react-router";
 import axios from "axios";
 
+let editedId = null;
 const User = (props) => {
     const history = useHistory();
     const text1 = 'Are you sure to Delete this task?';
@@ -30,8 +31,15 @@ const User = (props) => {
         listData();
     }, [])
 
-    const listData =()=>{
-        axios.get(`http://localhost:8080/notes`).then(response => setData(response.data || [])).catch(error => console.log(error));
+    const listData = () => {
+        axios.get(`http://localhost:8080/users`)
+            .then(response => {
+                setData(response.data || [])
+                setDuplicate(response.data)
+            })
+            .catch(error =>
+                console.log(error)
+            );
     }
 
     const handleChange = e => {
@@ -63,7 +71,7 @@ const User = (props) => {
         // localStorage.setItem('list', JSON.stringify(filterData));
         // setData(filterData);
 
-        axios.delete(`http://localhost:8080/notes/${record._id}`).then(response => {
+        axios.delete(`http://localhost:8080/users/${record}`).then(response => {
             listData();
             message.success("successfully deleted")
         }).catch(error => console.log(error));
@@ -71,7 +79,7 @@ const User = (props) => {
 
     const onEdit = (id) => {
         history.push(`/editUserDetails/${id}`);
-
+        listData();
     }
 
     const addNew = () => {

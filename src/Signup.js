@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
+import axios from "axios";
 import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumber} from "antd";
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
-import {useHistory} from "react-router";
-import axios from "axios";
 
-let editedId = null;
+
 const SignUp = (props) => {
     const history = useHistory();
     const [userDetail, setUserDetail] = useState({});
@@ -45,12 +45,18 @@ const SignUp = (props) => {
         //     }
         // }
         // setData(list);
-        listData();
-    }, [])
+        listData(props.match.params.id);
+    }, [props.match.params.id])
 
-    const listData = () => {
-        axios.get(`http://localhost:8080/notes`).then(response => setData(response.data || [])).catch(error => console.log(error));
-
+    const listData = (id) => {
+        axios.get(`http://localhost:8080/users/${id}`)
+            .then(response =>{
+            if(response.data && response.data._id){
+                setUserDetail(response.data)}
+    })
+            .catch(error =>
+                console.log(error)
+            );
     }
 
     const handleChange = (e) => {
@@ -138,19 +144,19 @@ const SignUp = (props) => {
             //
         //     }
         else {
-            if (editedId !== null) {
-                axios.get(`http://localhost:8080/notes/${editedId}`)
+            if (props.match.params.id !== null) {
+                axios.put (`http://localhost:8080/users/${userDetail._id}`,userDetail)
                     .then((res) => {
-                            // resetForm()
-                            history.push("/user")
+                        resetForm()
+                        history.push("/user")
                         }
                     );
             } else {
                 userDetail.id = data.length + 1;
-                axios.post('http://localhost:8080/notes', userDetail)
+                axios.post('http://localhost:8080/users', userDetail)
                     .then(() => {
                         resetForm()
-                        history.push("/user")
+                        history.push("/login")
                     })
             }
         }
