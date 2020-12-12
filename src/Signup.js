@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {useHistory} from "react-router";
-import axios from "axios";
 import {Row, Col, Card, Form, Input, Select, Radio, Checkbox, Button, InputNumber} from "antd";
 import {UserOutlined, MailOutlined, HomeOutlined, FlagOutlined, LockOutlined, MobileOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';
@@ -36,28 +35,16 @@ const SignUp = (props) => {
     ]);
 
     useEffect(() => {
-        // let list = [];
-        // if (JSON.parse(localStorage.getItem("list")) !== null) {
-        //     list = JSON.parse(localStorage.getItem("list"));
-        //     if (props.match.params.id) {
-        //         const findId = list.find(item => item.id === parseInt(props.match.params.id));
-        //             setUserDetail(findId);
-        //     }
-        // }
-        // setData(list);
-        listData(props.match.params.id);
-    }, [props.match.params.id])
-
-    const listData = (id) => {
-        axios.get(`http://localhost:8080/users/${id}`)
-            .then(response =>{
-            if(response.data && response.data._id){
-                setUserDetail(response.data)}
-    })
-            .catch(error =>
-                console.log(error)
-            );
-    }
+        let list = [];
+        if (JSON.parse(localStorage.getItem("list")) !== null) {
+            list = JSON.parse(localStorage.getItem("list"));
+            if (props.match.params.id) {
+                const findId = list.find(item => item.id === parseInt(props.match.params.id));
+                setUserDetail(findId);
+            }
+        }
+        setData(list);
+    }, [])
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -104,11 +91,6 @@ const SignUp = (props) => {
         }
     };
 
-    const resetForm = () => {
-        setUserDetail({})
-        setError({})
-    }
-
     const onSubmit = () => {
         let errorObj = {}
         const newsUerDetail = {
@@ -131,148 +113,135 @@ const SignUp = (props) => {
         });
         if (Object.keys(errorObj).length) {
             return setError(errorObj);
-        }
-            // else {
-            //     if (props.match.params.id !== undefined) {
-            //         let index = data.findIndex(item => item.id === parseInt(props.match.params.id));
-            //         data[index] = userDetail
-            //         setData(data)
-            //     } else {
-            //         userDetail.id = data.length + 1;
-            //          data.push(userDetail)
-            //          setData(data)
-            //
-        //     }
-        else {
-            if (props.match.params.id !== null) {
-                axios.put (`http://localhost:8080/users/${userDetail._id}`,userDetail)
-                    .then((res) => {
-                        resetForm()
-                        history.push("/user")
-                        }
-                    );
+        } else {
+            if (props.match.params.id !== undefined) {
+                let index = data.findIndex(item => item.id === parseInt(props.match.params.id));
+                data[index] = userDetail
+                setData(data)
+                history.push('./user')
             } else {
                 userDetail.id = data.length + 1;
-                axios.post('http://localhost:8080/users', userDetail)
-                    .then(() => {
-                        resetForm()
-                        history.push("/login")
-                    })
+                data.push(userDetail)
+                setData(data)
+                history.push('/')
+
             }
+            setUserDetail({})
+            setError({})
+
+        }
         }
 
+
+        return (
+            <>
+                <Row style={{marginTop: 100}}>
+                    <Col span={8}/>
+                    <Col span={8}>
+                        <Card>
+                            <h2 style={{textAlign: "center"}}>Registration Form</h2>
+                            <p style={{textAlign: "center"}}>Creat Your Account</p><br/>
+                            <Form>
+                                <Form.Item>
+                                    <Input placeholder="Enter Your firstname" name="firstName"
+                                           value={userDetail.firstName}
+                                           onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                    <span className="text-danger">{error.firstName || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Input placeholder="Enter Your lastname" name="lastName" value={userDetail.lastName}
+                                           onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
+                                    <span className="text-danger">{error.lastName || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Input placeholder="Enter Your EmailId" name="email" value={userDetail.email}
+                                           onChange={handleChange} addonBefore={<MailOutlined/>}/>
+                                    <span className="text-danger">{error.email || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Input placeholder="Enter Your Mobile Number" name="phone" value={userDetail.phone}
+                                           onChange={handleChange} addonBefore={<MobileOutlined/>}
+                                           style={{width: '100%'}}/>
+                                    <span className="text-danger">{error.phone || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    Age : <InputNumber placeholder="age" name="age"
+                                                       onChange={value => handleChange({target: {name: "age", value}})}
+                                                       value={userDetail.age}/>
+                                    <span className="text-danger">{error.age || ""}</span>
+                                </Form.Item>
+
+
+                                <Form.Item>
+                                    <Input rows={4} name="address" placeholder="Please Input Your Address!"
+                                           value={userDetail.address}
+                                           onChange={handleChange} addonBefore={<HomeOutlined/>}/>
+                                    <span className="text-danger">{error.address || ""}</span>
+
+                                </Form.Item>
+
+                                <Form.Item>
+
+                                    Gender: <Radio.Group name="gender" onChange={e => handleChange({
+                                    target: {
+                                        name: "gender",
+                                        value: e.target.value
+                                    }
+                                })} value={userDetail.gender}>
+                                    <Radio value="Male">Male</Radio>
+                                    <Radio value="Female">Female</Radio>
+                                    <Radio value="Other">Other</Radio>
+                                </Radio.Group>
+                                    <span className="text-danger">{error.gender || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item label={(<FlagOutlined/>)}>
+                                    <Select
+                                        placeholder="Please Select Your Country"
+                                        onChange={value => handleChange({target: {name: "country", value}})}
+                                        value={userDetail.country}
+                                        allowClear
+                                    >
+                                        {items.map(items => (
+                                            <Select.Option
+                                                key={items.value}
+                                                value={items.value}>
+                                                {items.label}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                    <span className="text-danger">{error.country || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+
+                                    <Input.Password placeholder="Enter Your PassWord" name="password"
+                                                    value={userDetail.password} onChange={handleChange}
+                                                    addonBefore={(<LockOutlined/>)}/>
+                                    <span className="text-danger">{error.password || ""}</span>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Checkbox name="checkbox">
+                                        I have read the agreement
+                                    </Checkbox>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Button className="btn-create-account" onClick={onSubmit}>
+                                        Create Account
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </Card>
+                    </Col>
+                    <Col span={8}/>
+                </Row>
+            </>
+        )
     }
-
-
-
-    return (
-        <>
-            <Row style={{marginTop: 100}}>
-                <Col span={8}/>
-                <Col span={8}>
-                    <Card>
-                        <h2 style={{textAlign: "center"}}>Registration Form</h2>
-                        <p style={{textAlign: "center"}}>Creat Your Account</p><br/>
-                        <Form>
-                            <Form.Item>
-                                <Input placeholder="Enter Your firstname" name="firstName" value={userDetail.firstName}
-                                       onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
-                                <span className="text-danger">{error.firstName || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Input placeholder="Enter Your lastname" name="lastName" value={userDetail.lastName}
-                                       onChange={handleChange} addonBefore={(<UserOutlined/>)}/>
-                                <span className="text-danger">{error.lastName || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Input placeholder="Enter Your EmailId" name="email" value={userDetail.email}
-                                       onChange={handleChange} addonBefore={<MailOutlined/>}/>
-                                <span className="text-danger">{error.email || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Input placeholder="Enter Your Mobile Number" name="phone" value={userDetail.phone}
-                                       onChange={handleChange} addonBefore={<MobileOutlined/>}
-                                       style={{width: '100%'}}/>
-                                <span className="text-danger">{error.phone || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-                                Age : <InputNumber placeholder="age" name="age"
-                                                   onChange={value => handleChange({target: {name: "age", value}})}
-                                                   value={userDetail.age}/>
-                                <span className="text-danger">{error.age || ""}</span>
-                            </Form.Item>
-
-
-                            <Form.Item>
-                                <Input rows={4} name="address" placeholder="Please Input Your Address!"
-                                       value={userDetail.address}
-                                       onChange={handleChange} addonBefore={<HomeOutlined/>}/>
-                                <span className="text-danger">{error.address || ""}</span>
-
-                            </Form.Item>
-
-                            <Form.Item>
-
-                                Gender: <Radio.Group name="gender" onChange={e => handleChange({
-                                target: {
-                                    name: "gender",
-                                    value: e.target.value
-                                }
-                            })} value={userDetail.gender}>
-                                <Radio value="Male">Male</Radio>
-                                <Radio value="Female">Female</Radio>
-                                <Radio value="Other">Other</Radio>
-                            </Radio.Group>
-                                <span className="text-danger">{error.gender || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item label={(<FlagOutlined/>)}>
-                                <Select
-                                    placeholder="Please Select Your Country"
-                                    onChange={value => handleChange({target: {name: "country", value}})}
-                                    value={userDetail.country}
-                                    allowClear
-                                >
-                                    {items.map(items => (
-                                        <Select.Option
-                                            key={items.value}
-                                            value={items.value}>
-                                            {items.label}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                                <span className="text-danger">{error.country || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-
-                                <Input.Password placeholder="Enter Your PassWord" name="password"
-                                                value={userDetail.password} onChange={handleChange}
-                                                addonBefore={(<LockOutlined/>)}/>
-                                <span className="text-danger">{error.password || ""}</span>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Checkbox name="checkbox">
-                                    I have read the agreement
-                                </Checkbox>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Button className="btn-create-account" onClick={onSubmit}>
-                                    Create Account
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </Col>
-                <Col span={8}/>
-            </Row>
-        </>
-    )
-}
-export default SignUp;
+    export default SignUp;

@@ -21,26 +21,14 @@ const User = (props) => {
     const [duplicate, setDuplicate] = useState([]);
 
     useEffect(() => {
-        // let list = [];
-        // if (JSON.parse(localStorage.getItem('list')) !== null) {
-        //     list = JSON.parse(localStorage.getItem("list"));
-        // }
-        // ;
-        // setData(list);
-        // setDuplicate(list);
-        listData();
+        let list = [];
+        if (JSON.parse(localStorage.getItem('list')) !== null) {
+            list = JSON.parse(localStorage.getItem("list"));
+        }
+        setData(list);
+        setDuplicate(list);
     }, [])
 
-    const listData = () => {
-        axios.get(`http://localhost:8080/users`)
-            .then(response => {
-                setData(response.data || [])
-                setDuplicate(response.data)
-            })
-            .catch(error =>
-                console.log(error)
-            );
-    }
 
     const handleChange = e => {
         const {name, value} = e.target;
@@ -66,20 +54,13 @@ const User = (props) => {
     }
 
     const onDelete = (record) => {
-
-        // const filterData = data.filter(index => index !== record);
-        // localStorage.setItem('list', JSON.stringify(filterData));
-        // setData(filterData);
-
-        axios.delete(`http://localhost:8080/users/${record}`).then(response => {
-            listData();
-            message.success("successfully deleted")
-        }).catch(error => console.log(error));
+        const filterData = data.filter(index => index !== record);
+        localStorage.setItem('list', JSON.stringify(filterData));
+        setData(filterData);
     }
 
     const onEdit = (id) => {
         history.push(`/editUserDetails/${id}`);
-        listData();
     }
 
     const addNew = () => {

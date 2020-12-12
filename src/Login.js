@@ -12,14 +12,14 @@ const Login = (props) => {
     const [loginData, setLoginData] = useState({});
     const [list, setList] = useState([]);
 
-    // useEffect(() => {
-    //     let data = [];
-    //     if (JSON.parse(localStorage.getItem("list")) !== null) {
-    //         data = JSON.parse(localStorage.getItem("list"));
-    //     }
-    //     setList(data);
-    //
-    // }, []);
+    useEffect(() => {
+        let data = [];
+        if (JSON.parse(localStorage.getItem("list")) !== null) {
+            data = JSON.parse(localStorage.getItem("list"));
+        }
+        setList(data);
+
+    }, []);
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -27,28 +27,14 @@ const Login = (props) => {
     }
 
     const onLogin = () => {
-        // const findLofinUser = list.find(user => user.email === loginData.email && user.password === loginData.password);
-        // if (findLofinUser && findLofinUser.email && findLofinUser.password) {
-        //     message.success('You Successfully Loged In');
-        //     localStorage.setItem("isActive",findLofinUser.email)
-        //     history.push("/dashboard");
-        // } else {
-        //     message.error('Enter Valid Details');
-        // }
-        axios.post(`http://localhost:8080/users/login`, loginData)
-            .then(res => {
-
-                if (res &&  res.data && res.data._id) {
-                    message.success('You Successfully Loged In');
-                    localStorage.setItem("isActive", res.data.email)
-                    history.push("/dashboard");
-                } else {
-                    message.error('user not found')
-                }
-            })
-            .catch(error => {
-                message.error('please enter valid data')
-            });
+        const findLofinUser = list.find(user => user.email === loginData.email && user.password === loginData.password);
+        if (findLofinUser && findLofinUser.email && findLofinUser.password) {
+            message.success('You Successfully Loged In');
+            localStorage.setItem("isActive",findLofinUser.email)
+            history.push("/dashboard");
+        } else {
+            message.error('Enter Valid Details');
+        }
         }
 
         const signUp = () => {
